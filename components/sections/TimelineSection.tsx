@@ -58,7 +58,7 @@ export default function TimelineSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-24"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Our Journey
@@ -68,25 +68,32 @@ export default function TimelineSection() {
           </p>
         </motion.div>
 
-        {/* Timeline */}
-        <div ref={ref} className="relative hidden lg:block max-w-6xl mx-auto min-h-[420px]">
-
+        {/* Desktop Timeline */}
+        <div
+          ref={ref}
+          className="relative hidden lg:block max-w-6xl mx-auto min-h-[520px]"
+        >
           {/* Center Line */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
             transition={{ duration: 1.2 }}
-            className="absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-400 via-purple-500 to-green-400 origin-left"
+            className="absolute left-0 right-0 top-[260px] h-[3px]
+                       bg-gradient-to-r from-purple-400 via-purple-500 to-green-400
+                       origin-left rounded-full"
           />
 
-          <div className="flex justify-between items-center h-full">
+          <div className="flex justify-between relative">
 
             {timelineData.map((item, index) => {
               const Icon = item.icon;
               const isTop = index % 2 === 0;
 
               return (
-                <div key={item.year} className="relative flex flex-col items-center flex-1">
+                <div
+                  key={item.year}
+                  className="relative flex-1 flex flex-col items-center"
+                >
 
                   {/* TOP CARD */}
                   {isTop && (
@@ -94,9 +101,9 @@ export default function TimelineSection() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="mb-auto pb-24 text-center"
+                      className="pb-[180px]"
                     >
-                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs text-center hover:shadow-xl transition-all duration-300">
                         <div className="text-2xl font-bold text-purple-600 mb-2">
                           {item.year}
                         </div>
@@ -110,14 +117,16 @@ export default function TimelineSection() {
                     </motion.div>
                   )}
 
-                  {/* ICON ON CENTER LINE */}
+                  {/* ICON (LOCKED TO CENTER LINE HEIGHT) */}
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={isInView ? { scale: 1 } : {}}
                     transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                    className="absolute top-1/2 -translate-y-1/2 z-10"
+                    className="absolute top-[260px] -translate-y-1/2 z-10"
                   >
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-600/25">
+                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 
+                                    rounded-2xl flex items-center justify-center 
+                                    shadow-lg shadow-purple-600/25">
                       <Icon className="w-8 h-8 text-white" />
                     </div>
                   </motion.div>
@@ -128,9 +137,9 @@ export default function TimelineSection() {
                       initial={{ opacity: 0, y: 40 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{ duration: 0.6, delay: index * 0.1 }}
-                      className="mt-auto pt-24 text-center"
+                      className="pt-[180px]"
                     >
-                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
+                      <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs text-center hover:shadow-xl transition-all duration-300">
                         <div className="text-2xl font-bold text-purple-600 mb-2">
                           {item.year}
                         </div>
@@ -152,12 +161,14 @@ export default function TimelineSection() {
         </div>
 
         {/* Mobile Timeline */}
-        <div className="lg:hidden space-y-10">
+        <div className="lg:hidden space-y-12">
           {timelineData.map((item, index) => {
             const Icon = item.icon;
             return (
               <div key={item.year} className="flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-600/25">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 
+                                rounded-2xl flex items-center justify-center 
+                                mb-6 shadow-lg shadow-purple-600/25">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
                 <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs">
