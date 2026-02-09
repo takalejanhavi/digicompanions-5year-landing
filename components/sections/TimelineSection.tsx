@@ -168,7 +168,7 @@ export default function TimelineSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="mb-auto pb-20"
+            className="mb-auto pb-24"
           >
             <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
               <div className="text-2xl font-bold text-purple-600 mb-2">
@@ -184,25 +184,27 @@ export default function TimelineSection() {
           </motion.div>
         )}
 
-        {/* CONNECTOR LINE */}
-        <div
-          className={`absolute left-1/2 -translate-x-1/2 w-[2px] bg-purple-200 ${
-            isAbove ? 'top-[20%] h-[80px]' : 'bottom-[20%] h-[80px]'
-          }`}
-        />
+{/* CONNECTOR LINE */}
+<div
+  className={`absolute left-1/2 -translate-x-1/2 w-[2px] bg-purple-300 ${
+    isAbove ? 'top-1/2 -translate-y-full h-16' : 'top-1/2 h-16'
+  }`}
+/>
 
-        {/* PREMIUM NODE */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={isInView ? { scale: 1 } : {}}
-          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-          className="absolute top-1/2 -translate-y-1/2 z-10"
-        >
-          <div className="relative">
-            <div className="w-6 h-6 rounded-full bg-white border-4 border-purple-600 shadow-lg" />
-            <div className="absolute inset-0 rounded-full bg-purple-500 opacity-20 blur-md" />
-          </div>
-        </motion.div>
+
+{/* PREMIUM NODE */}
+<motion.div
+  initial={{ scale: 0 }}
+  animate={isInView ? { scale: 1 } : {}}
+  transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+  className="absolute top-1/2 -translate-y-1/2 z-10"
+>
+  <div className="relative flex items-center justify-center">
+    <div className="w-5 h-5 rounded-full bg-white border-[3px] border-purple-600 shadow-md" />
+    <div className="absolute w-8 h-8 rounded-full bg-purple-500/20 blur-md" />
+  </div>
+</motion.div>
+
 
         {/* BOTTOM CARD */}
         {!isAbove && (
@@ -210,7 +212,7 @@ export default function TimelineSection() {
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="mt-auto pt-20"
+            className="mt-auto pt-24"
           >
             <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
               <div className="text-2xl font-bold text-purple-600 mb-2">
