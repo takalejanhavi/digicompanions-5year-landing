@@ -48,41 +48,62 @@ function TimelineItem({ item, index }: { item: TimelineItem; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const Icon = item.icon;
-  const isEven = index % 2 === 0;
+  const isTop = index % 2 === 0;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`relative flex flex-col items-center text-center group ${
-        isEven ? 'lg:flex-col' : 'lg:flex-col-reverse'
-      }`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.5, delay: index * 0.15, ease: 'easeOut' }}
+      className="relative flex flex-col items-center"
     >
-      {/* Content */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.6, delay: index * 0.1 + 0.5 }}
-        className={`bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs group-hover:shadow-xl transition-shadow duration-300 ${
-          isEven ? 'lg:mb-6' : 'lg:mt-6'
-        }`}
-      >
-        <div className="text-2xl font-bold text-purple-600 mb-2">{item.year}</div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
-        <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-      </motion.div>
+      {/* Card positioned above timeline */}
+      <div className={`${isTop ? 'order-1 mb-8' : 'order-3 mt-8'} hidden lg:block`}>
+        <motion.div
+          whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+          transition={{ duration: 0.2 }}
+          className="w-80 bg-white rounded-xl shadow-md p-6 border border-gray-100"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+              <Icon className="w-5 h-5 text-purple-600" />
+            </div>
+            <div className="text-2xl font-bold text-purple-600">{item.year}</div>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
+          <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+        </motion.div>
+      </div>
 
-      {/* Timeline Node */}
+      {/* Vertical connector */}
+      <div className={`${isTop ? 'order-2' : 'order-2'} hidden lg:block w-0.5 ${isTop ? 'h-8' : 'h-8'} bg-gray-200`} />
+
+      {/* Timeline node */}
       <motion.div
         initial={{ scale: 0 }}
         animate={isInView ? { scale: 1 } : { scale: 0 }}
-        transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
-        className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300 my-6 lg:my-0"
-      >
-        <Icon className="w-8 h-8 text-white" />
-      </motion.div>
+        transition={{ duration: 0.3, delay: index * 0.15 + 0.2 }}
+        className="order-2 w-5 h-5 rounded-full border-2 border-purple-600 bg-green-500 flex-shrink-0 z-10"
+      />
+
+      {/* Mobile card */}
+      <div className="lg:hidden mt-4 ml-8">
+        <motion.div
+          whileHover={{ y: -4, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+          transition={{ duration: 0.2 }}
+          className="bg-white rounded-xl shadow-md p-6 border border-gray-100"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+              <Icon className="w-5 h-5 text-purple-600" />
+            </div>
+            <div className="text-2xl font-bold text-purple-600">{item.year}</div>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
+          <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -92,14 +113,14 @@ export default function TimelineSection() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-purple-50/30">
+    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Our Journey
@@ -109,17 +130,31 @@ export default function TimelineSection() {
           </p>
         </motion.div>
 
-        <div ref={ref} className="relative">
-          {/* Desktop Timeline Line */}
+        {/* Desktop Timeline */}
+        <div ref={ref} className="relative hidden lg:block">
+          {/* Horizontal timeline line */}
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
-            transition={{ duration: 1.5, delay: 0.3 }}
-            className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 via-purple-400 to-green-400 transform origin-left"
+            transition={{ duration: 1.5, delay: 0.3, ease: 'easeInOut' }}
+            className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-gray-300 origin-left"
           />
           
-          {/* Timeline Items */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-4">
+          {/* Timeline items */}
+          <div className="flex justify-between items-center relative">
+            {timelineData.map((item, index) => (
+              <TimelineItem key={item.year} item={item} index={index} />
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile Timeline */}
+        <div className="lg:hidden relative">
+          {/* Vertical line */}
+          <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-gray-300" />
+          
+          {/* Timeline items */}
+          <div className="space-y-12">
             {timelineData.map((item, index) => (
               <TimelineItem key={item.year} item={item} index={index} />
             ))}
