@@ -48,6 +48,7 @@ function TimelineItem({ item, index }: { item: TimelineItem; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const Icon = item.icon;
+  const isEven = index % 2 === 0;
 
   return (
     <motion.div
@@ -55,28 +56,32 @@ function TimelineItem({ item, index }: { item: TimelineItem; index: number }) {
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="relative flex flex-col items-center text-center group"
+      className={`relative flex flex-col items-center text-center group ${
+        isEven ? 'lg:flex-col' : 'lg:flex-col-reverse'
+      }`}
     >
-      {/* Timeline Node */}
-      <motion.div
-        initial={{ scale: 0 }}
-        animate={isInView ? { scale: 1 } : { scale: 0 }}
-        transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
-        className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300"
-      >
-        <Icon className="w-8 h-8 text-white" />
-      </motion.div>
-      
       {/* Content */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : { opacity: 0 }}
         transition={{ duration: 0.6, delay: index * 0.1 + 0.5 }}
-        className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs group-hover:shadow-xl transition-shadow duration-300"
+        className={`bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs group-hover:shadow-xl transition-shadow duration-300 ${
+          isEven ? 'lg:mb-6' : 'lg:mt-6'
+        }`}
       >
         <div className="text-2xl font-bold text-purple-600 mb-2">{item.year}</div>
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
         <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+      </motion.div>
+
+      {/* Timeline Node */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={isInView ? { scale: 1 } : { scale: 0 }}
+        transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
+        className="w-16 h-16 bg-gradient-to-br from-purple-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300 my-6 lg:my-0"
+      >
+        <Icon className="w-8 h-8 text-white" />
       </motion.div>
     </motion.div>
   );
@@ -110,7 +115,7 @@ export default function TimelineSection() {
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
             transition={{ duration: 1.5, delay: 0.3 }}
-            className="hidden lg:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 via-purple-400 to-green-400 transform origin-left"
+            className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-300 via-purple-400 to-green-400 transform origin-left"
           />
           
           {/* Timeline Items */}
