@@ -44,12 +44,83 @@ const timelineData: TimelineItemType[] = [
   },
 ];
 
+function TimelineItem({
+  item,
+  index,
+}: {
+  item: TimelineItemType;
+  index: number;
+}) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isAbove = index % 2 === 0;
+
+  return (
+    <div ref={ref} className="relative flex flex-col items-center flex-1">
+      
+      {/* Top Card */}
+      {isAbove && (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className="mb-16"
+        >
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
+            <div className="text-2xl font-bold text-purple-600 mb-2">
+              {item.year}
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {item.title}
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {item.description}
+            </p>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Node aligned perfectly to center line */}
+      <motion.div
+        initial={{ scale: 0 }}
+        animate={isInView ? { scale: 1 } : {}}
+        transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+        className="absolute top-1/2 -translate-y-1/2 z-10"
+      >
+        <div className="w-4 h-4 rounded-full border-2 border-purple-600 bg-white" />
+      </motion.div>
+
+      {/* Bottom Card */}
+      {!isAbove && (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          className="mt-16"
+        >
+          <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
+            <div className="text-2xl font-bold text-purple-600 mb-2">
+              {item.year}
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {item.title}
+            </h3>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {item.description}
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 export default function TimelineSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section className="py-24 bg-gradient-to-b from-white to-purple-50/30">
+    <section className="py-20 bg-gradient-to-b from-white to-purple-50/30">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
         {/* Heading */}
@@ -58,7 +129,7 @@ export default function TimelineSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-24"
+          className="text-center mb-20"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
             Our Journey
@@ -68,92 +139,106 @@ export default function TimelineSection() {
           </p>
         </motion.div>
 
-        {/* DESKTOP TIMELINE */}
-        <div
-          ref={ref}
-          className="relative hidden lg:flex justify-between max-w-6xl mx-auto min-h-[420px]"
-        >
-          {/* Center Line */}
+{/* DESKTOP TIMELINE */}
+<div
+  ref={ref}
+  className="relative hidden lg:flex justify-between max-w-6xl mx-auto min-h-[450px]"
+>
+  {/* Gradient Center Line */}
+  <motion.div
+    initial={{ scaleX: 0 }}
+    animate={isInView ? { scaleX: 1 } : {}}
+    transition={{ duration: 1 }}
+    className="absolute top-1/2 left-0 right-0 h-[3px] 
+               bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 
+               origin-left -translate-y-1/2 rounded-full"
+  />
+
+  {timelineData.map((item, index) => {
+    const isAbove = index % 2 === 0;
+
+    return (
+      <div
+        key={item.year}
+        className="relative flex-1 flex flex-col items-center"
+      >
+        {/* TOP CARD */}
+        {isAbove && (
           <motion.div
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1 }}
-            className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-300 origin-left -translate-y-1/2"
-          />
-
-          {timelineData.map((item, index) => {
-            const isAbove = index % 2 === 0;
-
-            return (
-              <div
-                key={item.year}
-                className="relative flex-1 flex flex-col items-center"
-              >
-                {/* TOP CARD */}
-                {isAbove && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="mb-auto pb-16"
-                  >
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
-                      <div className="text-2xl font-bold text-purple-600 mb-2">
-                        {item.year}
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* NODE — perfectly centered */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={isInView ? { scale: 1 } : {}}
-                  transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
-                  className="absolute top-1/2 -translate-y-1/2 z-10"
-                >
-                  <div className="w-4 h-4 rounded-full border-2 border-purple-600 bg-white" />
-                </motion.div>
-
-                {/* BOTTOM CARD */}
-                {!isAbove && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="mt-auto pt-16"
-                  >
-                    <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-xl transition-shadow duration-300">
-                      <div className="text-2xl font-bold text-purple-600 mb-2">
-                        {item.year}
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="mb-auto pb-20"
+          >
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+              <div className="text-2xl font-bold text-purple-600 mb-2">
+                {item.year}
               </div>
-            );
-          })}
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* CONNECTOR LINE */}
+        <div
+          className={`absolute left-1/2 -translate-x-1/2 w-[2px] bg-purple-200 ${
+            isAbove ? 'top-[20%] h-[80px]' : 'bottom-[20%] h-[80px]'
+          }`}
+        />
+
+        {/* PREMIUM NODE */}
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={isInView ? { scale: 1 } : {}}
+          transition={{ duration: 0.4, delay: index * 0.1 + 0.2 }}
+          className="absolute top-1/2 -translate-y-1/2 z-10"
+        >
+          <div className="relative">
+            <div className="w-6 h-6 rounded-full bg-white border-4 border-purple-600 shadow-lg" />
+            <div className="absolute inset-0 rounded-full bg-purple-500 opacity-20 blur-md" />
+          </div>
+        </motion.div>
+
+        {/* BOTTOM CARD */}
+        {!isAbove && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="mt-auto pt-20"
+          >
+            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 max-w-xs hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+              <div className="text-2xl font-bold text-purple-600 mb-2">
+                {item.year}
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {item.title}
+              </h3>
+              <p className="text-gray-600 text-sm leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
+  })}
+
         </div>
 
-        {/* MOBILE TIMELINE */}
+        {/* Mobile Timeline */}
         <div className="lg:hidden relative">
           <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-gray-300" />
 
           <div className="space-y-10 pl-8">
-            {timelineData.map((item) => (
+            {timelineData.map((item, index) => (
               <div key={item.year} className="relative flex items-start gap-4">
+                
                 <div className="w-4 h-4 rounded-full border-2 border-purple-600 bg-white mt-2 z-10" />
 
                 <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
@@ -167,6 +252,7 @@ export default function TimelineSection() {
                     {item.description}
                   </p>
                 </div>
+
               </div>
             ))}
           </div>
