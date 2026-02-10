@@ -147,7 +147,7 @@ export default function Footer() {
           >
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-900/50 to-green-900/50 rounded-full border border-purple-500/20">
               <span className="text-xs text-gray-300">
-                🏆 Proudly serving 150+ brands since 2019
+                🏆 Proudly serving 150+ brands since 2021
               </span>
             </div>
           </motion.div>
