@@ -131,7 +131,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">Years Strong</p>
-                  <p className="text-sm text-gray-600">Est. 2019</p>
+                  <p className="text-sm text-gray-600">Est. 2021</p>
                 </div>
               </div>
             </motion.div>

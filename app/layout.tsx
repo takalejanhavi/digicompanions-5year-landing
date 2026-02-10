@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+/*export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -45,6 +45,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
+    </html>
+  );
+}*/
+// Previous code Replaced (above section) to add logo
+
+import './globals.css';
+import Logo from '@/components/sections/Logo';
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <Logo />
+        {children}
+      </body>
     </html>
   );
 }

@@ -12,34 +12,30 @@ interface Service {
 const services: Service[] = [
   {
     icon: TrendingUp,
-    title: 'Performance Marketing',
-    description: 'Data-driven campaigns that maximize ROI and drive measurable growth',
+    title: 'Digital Marketing',
+    description: 'We create innovative and intriguing visual content',
   },
   {
     icon: Share2,
-    title: 'Social Media Marketing',
-    description: 'Engaging content strategies that build communities and drive conversions',
+    title: 'SEO',
+    description: 'We run SEO for search traffic to take plunge through significant content',
   },
   {
     icon: Palette,
-    title: 'Branding & Creative',
-    description: 'Distinctive brand identities that resonate with your target audience',
+    title: 'Content Marketing',
+    description: 'We provide content strategy that keeps you ahead of competition',
   },
   {
     icon: Zap,
-    title: 'Paid Ads Strategy',
-    description: 'Optimized ad campaigns across all major platforms for maximum impact',
+    title: 'Social Media Marketing',
+    description: 'We creatively transform your brand stories',
   },
   {
     icon: Search,
-    title: 'SEO & Growth',
-    description: 'Organic search strategies that deliver long-term sustainable growth',
+    title: 'Web Designing',
+    description: 'Our unique ideas drive in design personalized, yet SEO optmized',
   },
-  {
-    icon: BarChart3,
-    title: 'Analytics & Reporting',
-    description: 'Comprehensive insights and reporting for informed decision making',
-  },
+  
 ];
 
 function ServiceCard({ service, index }: { service: Service; index: number }) {
