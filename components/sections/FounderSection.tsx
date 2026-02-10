@@ -39,7 +39,7 @@ export default function FounderSection() {
               className="absolute -bottom-6 -right-6 bg-white rounded-2xl shadow-xl p-6 border border-gray-100"
             >
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600">2019</div>
+                <div className="text-2xl font-bold text-purple-600">2021</div>
                 <div className="text-sm text-gray-600">Founded</div>
               </div>
             </motion.div>

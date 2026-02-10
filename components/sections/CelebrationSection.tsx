@@ -86,7 +86,7 @@ export default function CelebrationSection() {
             className="grid grid-cols-2 lg:grid-cols-4 gap-8 pt-16 mt-16 border-t border-gray-200"
           >
             {[
-              { number: '2019', label: 'Founded' },
+              { number: '2021', label: 'Founded' },
               { number: '150+', label: 'Brands' },
               { number: '500+', label: 'Campaigns' },
               { number: '5★', label: 'Excellence' },

@@ -4,9 +4,11 @@ import MetricsSection from '@/components/sections/MetricsSection';
 import TimelineSection from '@/components/sections/TimelineSection';
 import ExpertiseSection from '@/components/sections/ExpertiseSection';
 import FounderSection from '@/components/sections/FounderSection';
+import ContactFormSection from '@/components/sections/ContactFormSection';
 import CelebrationSection from '@/components/sections/CelebrationSection';
 import FinalCTASection from '@/components/sections/FinalCTASection';
 import Footer from '@/components/layout/Footer';
+import FloatingCTA from '@/components/ui/FloatingCTA';
 
 export const metadata: Metadata = {
   title: 'DigiCompanions - 5 Years of Digital Excellence | Foundation Day Celebration',
@@ -41,9 +43,11 @@ export default function HomePage() {
       <TimelineSection />
       <ExpertiseSection />
       <FounderSection />
+      <ContactFormSection />
       <CelebrationSection />
       <FinalCTASection />
       <Footer />
+      <FloatingCTA />
     </main>
   );
 }

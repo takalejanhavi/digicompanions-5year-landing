@@ -13,7 +13,7 @@ interface TimelineItem {
 
 const timelineData: TimelineItem[] = [
   {
-    year: '2019',
+    year: '2021',
     title: 'The Beginning',
     description: 'Founded with a vision to transform digital marketing',
     icon: Rocket,
