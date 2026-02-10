@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://digicompanions.com"),
 
   title: 'DigiCompanions - 5 Years of Digital Excellence | Foundation Day Celebration',
-  description: 'Celebrating 5 years of digital marketing excellence. Performance-driven campaigns, trusted by 150+ brands. Join us in building what\'s next.',
+  description: "Celebrating 5 years of digital marketing excellence. Performance-driven campaigns, trusted by 150+ brands. Join us in building what's next.",
   keywords: 'digital marketing, performance marketing, social media marketing, branding, paid ads, SEO, analytics',
 
   openGraph: {
