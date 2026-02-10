@@ -6,31 +6,6 @@ import { Mail, Phone, MapPin, Linkedin, Twitter, Instagram, Facebook } from 'luc
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   
-  const footerLinks = {
-    'Services': [
-      'Performance Marketing',
-      'Social Media Marketing',
-      'Branding & Creative',
-      'Paid Ads Strategy',
-      'SEO & Growth',
-      'Analytics & Reporting',
-    ],
-    'Company': [
-      'About Us',
-      'Our Story',
-      'Careers',
-      'Contact',
-      'Blog',
-      'Case Studies',
-    ],
-    'Legal': [
-      'Privacy Policy',
-      'Terms of Service',
-      'Cookie Policy',
-      'GDPR Compliance',
-    ],
-  };
-  
   const socialLinks = [
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
     { icon: Twitter, href: '#', label: 'Twitter' },
@@ -42,14 +17,14 @@ export default function Footer() {
     <footer className="bg-gray-900 text-white pt-20 pb-8">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 gap-12 mb-12">
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="lg:col-span-1"
+            className="max-w-2xl mx-auto text-center"
           >
             <div className="mb-6">
               <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-green-400 bg-clip-text text-transparent">
@@ -64,46 +39,21 @@ export default function Footer() {
               Transforming brands through performance-driven digital marketing strategies that deliver measurable results.
             </p>
             
-            <div className="space-y-3">
-              <div className="flex items-center text-gray-300 text-sm">
-                <Mail className="w-4 h-4 mr-3 text-green-400" />
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-300 text-sm">
+              <div className="flex items-center">
+                <Mail className="w-4 h-4 mr-2 text-green-400" />
                 hello@digicompanions.com
               </div>
-              <div className="flex items-center text-gray-300 text-sm">
-                <Phone className="w-4 h-4 mr-3 text-green-400" />
+              <div className="flex items-center">
+                <Phone className="w-4 h-4 mr-2 text-green-400" />
                 +1 (555) 123-4567
               </div>
-              <div className="flex items-center text-gray-300 text-sm">
-                <MapPin className="w-4 h-4 mr-3 text-green-400" />
+              <div className="flex items-center">
+                <MapPin className="w-4 h-4 mr-2 text-green-400" />
                 Digital Marketing Hub
               </div>
             </div>
           </motion.div>
-          
-          {/* Footer Links */}
-          {Object.entries(footerLinks).map(([category, links], index) => (
-            <motion.div
-              key={category}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <h4 className="text-lg font-semibold text-white mb-6">{category}</h4>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-green-400 transition-colors duration-200 text-sm"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          ))}
         </div>
         
         {/* Bottom Section */}
@@ -122,7 +72,7 @@ export default function Footer() {
             
             {/* Social Links */}
             <div className="flex items-center space-x-4">
-              {socialLinks.map((social, index) => (
+              {socialLinks.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
@@ -147,7 +97,7 @@ export default function Footer() {
           >
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-900/50 to-green-900/50 rounded-full border border-purple-500/20">
               <span className="text-xs text-gray-300">
-                🏆 Proudly serving 150+ brands since 2021
+                🏆 Proudly serving 150+ brands since 2019
               </span>
             </div>
           </motion.div>
