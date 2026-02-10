@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export default function Logo() {
   return (
-    <div className="fixed -top-2 left-6 z-50">
+    <div className="fixed -top-10 left-6 z-50">
       <Image
         src="/logo.png"
         alt="DigiCompanions Logo"
