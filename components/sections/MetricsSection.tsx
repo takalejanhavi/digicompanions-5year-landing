@@ -66,10 +66,10 @@ function MetricCard({ number, label, delay }: MetricProps) {
 
 export default function MetricsSection() {
   const metrics = [
-    { number: '5', label: 'Years Strong' },
-    { number: '500+', label: 'Campaigns' },
-    { number: '150+', label: 'Brands' },
-    { number: '100', label: 'Performance-Focused Growth' },
+    { number: "5", label: "Years Strong" },
+    { number: "160+", label: "Clients served" },
+    { number: "280+", label: "Chai pe Charcha" },
+    { number: "200+", label: "Projects Completed" },
   ];
 
   return (
