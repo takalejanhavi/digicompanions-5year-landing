@@ -1,17 +1,16 @@
-'use client';
-
-import Image from 'next/image';
+import Image from "next/image";
+import logo from "public/logo.png";
 
 export default function Logo() {
   return (
-    <div className="fixed -top-10 left-6 z-50">
+    <div className="fixed top-4 left-6 z-50">
       <Image
-        src="/logo.png"
+        src={logo}
         alt="DigiCompanions Logo"
-        width={200}
-        height={65}
+        width={180}
+        height={60}
         priority
-        className="object-contain"
+        className="object-contain w-[140px] sm:w-[180px]"
       />
     </div>
   );
