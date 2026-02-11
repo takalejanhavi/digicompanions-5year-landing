@@ -47,9 +47,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Logo />
-        {children}
+      <body className="antialiased">
+        {/* Logo container */}
+        <div className="absolute top-0 left-4 z-20">
+          <Logo />
+        </div>
+
+        {/* Push content down ONLY on mobile */}
+        <main className="pt-24 sm:pt-12">
+          {children}
+        </main>
       </body>
     </html>
   );
