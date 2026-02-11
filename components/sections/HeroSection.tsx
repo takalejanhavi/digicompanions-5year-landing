@@ -6,6 +6,13 @@ import Image from 'next/image';
 import { ArrowRight, Play } from 'lucide-react';
 
 export default function HeroSection() {
+  const scrollToForm = () => {
+    const formSection = document.getElementById('contact-form');
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -17,18 +24,17 @@ export default function HeroSection() {
     },
   };
 
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1] // cubic-bezier (safe type)
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1] // cubic-bezier (safe type)
+      }
     }
   }
-}
 
   return (
     <section className="relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 to-purple-50/30 overflow-hidden">
@@ -73,11 +79,12 @@ const itemVariants: Variants = {
               className="flex flex-col sm:flex-row gap-4 pt-4"
             >
               <motion.button
+                onClick={scrollToForm}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl transition-colors shadow-lg shadow-green-600/25"
               >
-                Start Your Growth Journey
+                Schedule a Strategy Consultation
                 <ArrowRight className="ml-2 w-5 h-5" />
               </motion.button>
               

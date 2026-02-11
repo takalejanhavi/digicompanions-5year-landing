@@ -14,7 +14,6 @@ export default function FounderSection() {
           name="Ambarish Bhore"
           role="Co-Founder & Director"
           foundedYear="2021"
-          
         />
 
         {/* CO-FOUNDER 2 → Content | Photo */}
