@@ -7,10 +7,10 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   
   const socialLinks = [
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Linkedin, href: 'https://www.linkedin.com/company/digicompanions/', label: 'LinkedIn' },
     { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Instagram, href: 'https://www.instagram.com/digicompanions/', label: 'Instagram' },
+    { icon: Facebook, href: 'https://www.facebook.com/DigiCompanions/', label: 'Facebook' },
   ];
 
   return (
@@ -42,11 +42,11 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 text-gray-300 text-sm">
               <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2 text-green-400" />
-                hello@digicompanions.com
+                business@digicompanions.com
               </div>
               <div className="flex items-center">
                 <Phone className="w-4 h-4 mr-2 text-green-400" />
-                +1 (555) 123-4567
+                +91 9508787662
               </div>
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2 text-green-400" />
