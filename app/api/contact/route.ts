@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface ContactFormData {
   fullName: string;
@@ -12,23 +14,26 @@ interface ContactFormData {
   recaptchaToken: string;
 }
 
-// Verify reCAPTCHA token
+/* ------------------ Verify reCAPTCHA ------------------ */
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  
+
   if (!secretKey) {
     console.error('RECAPTCHA_SECRET_KEY not configured');
     return false;
   }
 
   try {
-    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: `secret=${secretKey}&response=${token}`,
-    });
+    const response = await fetch(
+      'https://www.google.com/recaptcha/api/siteverify',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `secret=${secretKey}&response=${token}`,
+      }
+    );
 
     const data = await response.json();
     return data.success === true;
@@ -38,42 +43,30 @@ async function verifyRecaptcha(token: string): Promise<boolean> {
   }
 }
 
-// Create email transporter
-function createTransport() {
-  const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASS;
-
-  if (!emailUser || !emailPass) {
-    throw new Error('Email credentials not configured');
-  }
-
-   return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: {
-        user: emailUser,
-        pass: emailPass,
-    },
-    });
-
-}
-
-// Sanitize input to prevent XSS
+/* ------------------ Sanitize Input ------------------ */
 function sanitizeInput(input: string): string {
   return input
     .replace(/[<>]/g, '')
     .trim()
-    .substring(0, 1000); // Limit length
+    .substring(0, 1000);
 }
 
+/* ------------------ POST Handler ------------------ */
 export async function POST(request: NextRequest) {
   try {
     const body: ContactFormData = await request.json();
 
-    // Validate required fields
-    const requiredFields = ['fullName', 'companyName', 'workEmail', 'projectBrief', 'recaptchaToken'];
-    const missingFields = requiredFields.filter(field => !body[field as keyof ContactFormData]);
+    const requiredFields = [
+      'fullName',
+      'companyName',
+      'workEmail',
+      'projectBrief',
+      'recaptchaToken',
+    ];
+
+    const missingFields = requiredFields.filter(
+      (field) => !body[field as keyof ContactFormData]
+    );
 
     if (missingFields.length > 0) {
       return NextResponse.json(
@@ -82,7 +75,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify reCAPTCHA
+    /* Verify reCAPTCHA */
     const isRecaptchaValid = await verifyRecaptcha(body.recaptchaToken);
     if (!isRecaptchaValid) {
       return NextResponse.json(
@@ -91,20 +84,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Sanitize inputs
+    /* Sanitize Data */
     const sanitizedData = {
       fullName: sanitizeInput(body.fullName),
       companyName: sanitizeInput(body.companyName),
       workEmail: sanitizeInput(body.workEmail),
-      phoneNumber: body.phoneNumber ? sanitizeInput(body.phoneNumber) : '',
+      phoneNumber: body.phoneNumber
+        ? sanitizeInput(body.phoneNumber)
+        : '',
       industry: body.industry ? sanitizeInput(body.industry) : '',
       services: Array.isArray(body.services)
-  ? body.services.map(service => sanitizeInput(service))
-  : [],
+        ? body.services.map((service) => sanitizeInput(service))
+        : [],
       projectBrief: sanitizeInput(body.projectBrief),
     };
 
-    // Validate email format
+    /* Validate Email */
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(sanitizedData.workEmail)) {
       return NextResponse.json(
@@ -113,61 +108,62 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create email content
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #5A2D82; border-bottom: 2px solid #6BBF2A; padding-bottom: 10px;">
-          New Business Inquiry - DigiCompanions Website
-        </h2>
-        
-        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #1A1A1A; margin-top: 0;">Contact Information</h3>
-          <p><strong>Full Name:</strong> ${sanitizedData.fullName}</p>
-          <p><strong>Company Name:</strong> ${sanitizedData.companyName}</p>
-          <p><strong>Work Email:</strong> ${sanitizedData.workEmail}</p>
-          ${sanitizedData.phoneNumber ? `<p><strong>Phone Number:</strong> ${sanitizedData.phoneNumber}</p>` : ''}
-          ${sanitizedData.industry ? `<p><strong>Industry:</strong> ${sanitizedData.industry}</p>` : ''}
-        </div>
-
-        ${sanitizedData.services.length > 0 ? `
-        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #1A1A1A; margin-top: 0;">Services Required</h3>
-          <ul style="margin: 0; padding-left: 20px;">
-            ${sanitizedData.services.map(service => `<li>${service}</li>`).join('')}
-          </ul>
-        </div>
-        ` : ''}
-
-        <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <h3 style="color: #1A1A1A; margin-top: 0;">Business Goals / Project Brief</h3>
-          <p style="white-space: pre-wrap; line-height: 1.6;">${sanitizedData.projectBrief}</p>
-        </div>
-
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px;">
-          <p>This inquiry was submitted through the DigiCompanions website contact form.</p>
-          <p>Submitted at: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
-        </div>
-      </div>
-    `;
-
-    // Send email
-    const transporter = createTransport();
-    
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: 'info@digicompanions.com',
+    /* Send Email via Resend */
+    await resend.emails.send({
+      from: 'DigiCompanions <onboarding@resend.dev>',
+      to: ['business@digicompanions.com'], 
       subject: 'New Business Inquiry - DigiCompanions Website',
-      html: emailHtml,
       replyTo: sanitizedData.workEmail,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #441b93; border-bottom: 2px solid #6db724; padding-bottom: 10px;">
+            New Business Inquiry
+          </h2>
+          
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Contact Information</h3>
+            <p><strong>Name:</strong> ${sanitizedData.fullName}</p>
+            <p><strong>Company:</strong> ${sanitizedData.companyName}</p>
+            <p><strong>Email:</strong> ${sanitizedData.workEmail}</p>
+            ${sanitizedData.phoneNumber ? `<p><strong>Phone:</strong> ${sanitizedData.phoneNumber}</p>` : ''}
+            ${sanitizedData.industry ? `<p><strong>Industry:</strong> ${sanitizedData.industry}</p>` : ''}
+          </div>
+
+          ${
+            sanitizedData.services.length > 0
+              ? `
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3>Services Required</h3>
+            <ul>
+              ${sanitizedData.services
+                .map((service) => `<li>${service}</li>`)
+                .join('')}
+            </ul>
+          </div>
+          `
+              : ''
+          }
+
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3>Project Brief</h3>
+            <p style="white-space: pre-wrap;">${sanitizedData.projectBrief}</p>
+          </div>
+
+          <p style="font-size: 12px; color: #777;">
+            Submitted at: ${new Date().toLocaleString('en-IN', {
+              timeZone: 'Asia/Kolkata',
+            })}
+          </p>
+        </div>
+      `,
     });
 
     return NextResponse.json(
       { message: 'Form submitted successfully' },
       { status: 200 }
     );
-
   } catch (error) {
-    console.error('Contact form submission error:', error);
+    console.error('Contact form error:', error);
     return NextResponse.json(
       { error: 'Internal server error. Please try again later.' },
       { status: 500 }
